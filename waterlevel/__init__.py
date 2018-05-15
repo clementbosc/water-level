@@ -61,7 +61,7 @@ def get_fulfillment_text(data):
     print(station_id)
 
     if station_id is None:
-        return {'fulfillmentText': "Je n'ai pas trouvé cette station dans ma memoire." }
+        return {'fulfillmentText': "Je n'ai pas trouve cette station dans ma memoire." }
 
     url = "https://www.vigicrues.gouv.fr/services/observations.xml/?CdStationHydro=" + station_id
     context = ssl._create_unverified_context()
