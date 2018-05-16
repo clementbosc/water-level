@@ -29,7 +29,7 @@ def decode_params(params):
 
 
 def get_station_id(river, station):
-    rivers_file = open('waterlevel/rivers.json')
+    rivers_file = open('rivers.json')
     rivers = json.load(rivers_file)
     rivers_file.close()
 
