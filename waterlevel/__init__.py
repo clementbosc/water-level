@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from bs4 import BeautifulSoup
 from flask import Flask, jsonify, request
 from urllib.request import urlopen
@@ -61,7 +63,7 @@ def get_fulfillment_text(data):
     print(station_id)
 
     if station_id is None:
-        return {'fulfillmentText': "Je n'ai pas trouve cette station dans ma memoire." }
+        return {'fulfillmentText': "Je n'ai pas trouvé cette station dans ma mémoire." }
 
     url = "https://www.vigicrues.gouv.fr/services/observations.xml/?CdStationHydro=" + station_id
     context = ssl._create_unverified_context()
@@ -76,7 +78,7 @@ def get_fulfillment_text(data):
         date = n.DtObsHydro.get_text()
         last_niveau = {'level': int(level), 'date': parse(date)}
 
-    return { 'fulfillmentText': "Il y a " + str(last_niveau['level'] / 1000.).replace('.', ',') + " metres a la station " + station }
+    return { 'fulfillmentText': "Il y a " + str(last_niveau['level'] / 1000.).replace('.', ',') + " mètres à la station " + station }
 
 
 @app.route('/water_level', methods=['POST'])
