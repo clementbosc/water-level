@@ -29,26 +29,26 @@ def decode_params(params):
 
 
 def get_station_id(river, station):
-    with open('waterlevel/rivers.json') as rivers_file:
-        rivers = json.load(rivers_file)
-        #rivers_file.close()
+    rivers_file = open('waterlevel/rivers.json')
+    rivers = json.load(rivers_file)
+    rivers_file.close()
 
-        if river is None or river == '':
-            for r in rivers:
-                for s in rivers[r]:
-                    if unidecode.unidecode(s['station'].upper()) == unidecode.unidecode(station.upper()) or \
-                      (s['detail'] is not None and unidecode.unidecode(s['detail'].upper()) == unidecode.unidecode(station.upper())):
-                        return s['id']
-
+    if river is None or river == '':
         for r in rivers:
-            if unidecode.unidecode(r.upper()) == unidecode.unidecode(river.upper()):
-                print(r)
-                for s in rivers[r]:
-                    if unidecode.unidecode(s['station'].upper()) == unidecode.unidecode(station.upper()) or \
-                      (s['detail'] is not None and unidecode.unidecode(s['detail'].upper()) == unidecode.unidecode(station.upper())):
-                        return s['id']
+            for s in rivers[r]:
+                if unidecode.unidecode(s['station'].upper()) == unidecode.unidecode(station.upper()) or \
+                  (s['detail'] is not None and unidecode.unidecode(s['detail'].upper()) == unidecode.unidecode(station.upper())):
+                    return s['id']
 
-        return None
+    for r in rivers:
+        if unidecode.unidecode(r.upper()) == unidecode.unidecode(river.upper()):
+            print(r)
+            for s in rivers[r]:
+                if unidecode.unidecode(s['station'].upper()) == unidecode.unidecode(station.upper()) or \
+                  (s['detail'] is not None and unidecode.unidecode(s['detail'].upper()) == unidecode.unidecode(station.upper())):
+                    return s['id']
+
+    return None
 
 
 def get_fulfillment_text(data):
@@ -83,8 +83,7 @@ def get_fulfillment_text(data):
 
 @app.route('/water_level', methods=['POST'])
 def get_water_level():
-    data = json.loads(request.data)
-    print(data)
+    data = json.loads(request.data.decode('utf-8'))
 
     return jsonify(get_fulfillment_text(data))
 
