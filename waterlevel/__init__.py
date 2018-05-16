@@ -29,26 +29,26 @@ def decode_params(params):
 
 
 def get_station_id(river, station):
-    rivers_file = open('rivers.json')
-    rivers = json.load(rivers_file)
-    rivers_file.close()
+    with open('waterlevel/rivers.json') as rivers_file:
+        rivers = json.load(rivers_file)
+        #rivers_file.close()
 
-    if river is None or river == '':
+        if river is None or river == '':
+            for r in rivers:
+                for s in rivers[r]:
+                    if unidecode.unidecode(s['station'].upper()) == unidecode.unidecode(station.upper()) or \
+                      (s['detail'] is not None and unidecode.unidecode(s['detail'].upper()) == unidecode.unidecode(station.upper())):
+                        return s['id']
+
         for r in rivers:
-            for s in rivers[r]:
-                if unidecode.unidecode(s['station'].upper()) == unidecode.unidecode(station.upper()) or \
-                  (s['detail'] is not None and unidecode.unidecode(s['detail'].upper()) == unidecode.unidecode(station.upper())):
-                    return s['id']
+            if unidecode.unidecode(r.upper()) == unidecode.unidecode(river.upper()):
+                print(r)
+                for s in rivers[r]:
+                    if unidecode.unidecode(s['station'].upper()) == unidecode.unidecode(station.upper()) or \
+                      (s['detail'] is not None and unidecode.unidecode(s['detail'].upper()) == unidecode.unidecode(station.upper())):
+                        return s['id']
 
-    for r in rivers:
-        if unidecode.unidecode(r.upper()) == unidecode.unidecode(river.upper()):
-            print(r)
-            for s in rivers[r]:
-                if unidecode.unidecode(s['station'].upper()) == unidecode.unidecode(station.upper()) or \
-                  (s['detail'] is not None and unidecode.unidecode(s['detail'].upper()) == unidecode.unidecode(station.upper())):
-                    return s['id']
-
-    return None
+        return None
 
 
 def get_fulfillment_text(data):
